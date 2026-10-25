@@ -139,6 +139,18 @@
     </ul>
   </section>
 
+  <section>
+    <h2>Where it's going: the Jetson inside the robot</h2>
+    <p>Today the Jetson sits next to the Reachy Mini and drives it over USB. The goal is a single self-contained desk robot: replace the Reachy's base with a custom base that houses the Jetson Orin NX, so the brain lives inside the body.</p>
+    <p>That turns heat into the main design problem. Under load the board draws about 10&ndash;20&nbsp;W, and in open air at a busy hackathon it still reached the low 80s&nbsp;&deg;C with its fan at full speed. A closed base around motors and plastic leaves less room for that.</p>
+    <ul>
+      <li><strong>Heat budget first.</strong> We already cut the vision pipeline's work (20 fps instead of ~49, tracking only people, the debug video stream off by default), which took the idle board from roughly 20&nbsp;W to about 9&nbsp;W and from the low 80s to around 60&nbsp;&deg;C.</li>
+      <li><strong>Airflow and heat spreading.</strong> The base needs an intake and exhaust path, and a heatsink coupled to the enclosure, without blowing hot air over the motors.</li>
+      <li><strong>Acoustics.</strong> A fan inside the body sits close to the microphone array, so fan placement, isolation and noise suppression have to be designed together with the voice pipeline.</li>
+      <li><strong>Graceful when hot.</strong> A thermal gate pauses new answers before the chip throttles, and the robot says so in character: &ldquo;Phew, it's so hot in here my brain stopped working. Give me a moment to cool off!&rdquo;</li>
+    </ul>
+  </section>
+
   <footer>
     Built by <a href="https://github.com/mihai-chiorean">Mihai Chiorean</a> for the Gemma 4 hackathon.
   </footer>
