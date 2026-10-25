@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- ============================================================
+     DEMO VIDEO: replace REPLACE_WITH_VIDEO_ID with the YouTube
+     video ID (the part after "watch?v=" or "youtu.be/").
+     ============================================================ -->
+<script>const YOUTUBE_VIDEO_ID = "REPLACE_WITH_VIDEO_ID";</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Reachy Mini × Gemma 4</title>
+<meta name="description" content="A Reachy Mini desk robot driven by Gemma 4 E4B, running entirely on an NVIDIA Jetson Orin NX. No cloud, works offline.">
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --fg: #1d1d1f;
+    --muted: #5d5d66;
+    --card: #ffffff;
+    --border: #e4e2dc;
+    --accent: #1a73e8;
+    --accent-soft: #e8f0fe;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121316;
+      --fg: #ececf0;
+      --muted: #a2a3ad;
+      --card: #1b1c21;
+      --border: #2c2d34;
+      --accent: #8ab4f8;
+      --accent-soft: #1e2a3d;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  main { max-width: 820px; margin: 0 auto; padding: 48px 16px 64px; }
+  header h1 { font-size: clamp(1.7rem, 4.5vw, 2.5rem); line-height: 1.2; margin: 0 0 8px; letter-spacing: -0.01em; }
+  header p { margin: 0 0 28px; color: var(--muted); font-size: 1.1rem; }
+  .video {
+    position: relative; width: 100%; aspect-ratio: 16 / 9;
+    border-radius: 14px; overflow: hidden;
+    background: var(--card); border: 1px solid var(--border);
+  }
+  .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .placeholder {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 10px; text-align: center; padding: 16px;
+    background: linear-gradient(135deg, var(--accent-soft), var(--card));
+  }
+  .placeholder .play {
+    width: 64px; height: 64px; border-radius: 50%; border: 2px solid var(--accent);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .placeholder .play::after {
+    content: ""; margin-left: 5px;
+    border-style: solid; border-width: 11px 0 11px 18px;
+    border-color: transparent transparent transparent var(--accent);
+  }
+  .placeholder strong { font-size: 1.15rem; }
+  .placeholder span { color: var(--muted); font-size: 0.95rem; }
+  section { margin-top: 44px; }
+  h2 { font-size: 1.35rem; margin: 0 0 10px; }
+  p { margin: 0 0 12px; }
+  ul { padding-left: 1.2em; margin: 0; }
+  li { margin: 6px 0; }
+  .stack {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 20px 18px 36px;
+  }
+  a { color: var(--accent); }
+  footer {
+    margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border);
+    color: var(--muted); font-size: 0.95rem;
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Reachy Mini × Gemma 4 — a fully on-device robot companion</h1>
+    <p>A small desk robot that hears, sees, talks and moves, with every model running on the robot's own Jetson.</p>
+  </header>
+
+  <div class="video" id="video">
+    <div class="placeholder">
+      <div class="play" aria-hidden="true"></div>
+      <strong>Demo video coming soon</strong>
+      <span>The recording from the Gemma 4 hackathon will appear here.</span>
+    </div>
+  </div>
+
+  <section>
+    <h2>What it is</h2>
+    <p>A Reachy Mini desk robot driven by Gemma 4 E4B running entirely on a 16 GB NVIDIA Jetson Orin NX. There is no cloud service in the loop, and it keeps working offline.</p>
+  </section>
+
+  <section>
+    <h2>Gemma 4 everywhere</h2>
+    <ul>
+      <li><strong>On-device LLM.</strong> Gemma 4 E4B, using Google's QAT int4 weights, served by a fork of TensorRT Edge-LLM.</li>
+      <li><strong>Native audio input.</strong> Gemma 4 hears the user's raw audio directly; the Whisper transcript is passed along only as a hint.</li>
+      <li><strong>Multimodal vision.</strong> When asked, it looks through the robot's camera and answers about what it actually sees.</li>
+      <li><strong>Tool calls.</strong> It calls tools to move its head and base, take a look, and check who is present.</li>
+      <li><strong>Character.</strong> It is playful: it jokes about having no hands, and then actually performs the move it offered.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Look-to-talk</h2>
+    <p>Listening can be triggered by gaze instead of a wake word. Face detection, facial landmarks and an eye-gaze model run on the GPU; when the recognized owner looks at the robot, it does its "waking" move and starts listening. Looking away cancels.</p>
+    <p>In a noisy room, if speech recognition only hears noise, Gemma 4 listens to the raw audio itself, and stays silent if nobody actually spoke.</p>
+  </section>
+
+  <section>
+    <h2>Honest by design</h2>
+    <ul>
+      <li>It won't claim to see something without taking a fresh look through the camera.</li>
+      <li>Face identity is a personalization hint, never authentication.</li>
+      <li>A quiet mode suppresses all speech.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>On-device stack</h2>
+    <ul class="stack">
+      <li>NVIDIA Jetson Orin NX 16 GB, JetPack 7.2</li>
+      <li>Gemma 4 E4B on TensorRT Edge-LLM</li>
+      <li>whisper.cpp speech recognition</li>
+      <li>Phonon on-device text-to-speech (CPU)</li>
+      <li>DeepStream 9.1 perception at 20 fps: YOLO26n people tracking, YuNet face detection, MobileGaze eye gaze, SFace recognition</li>
+      <li>Reachy Mini body, driven through a collision-clamped motion service</li>
+    </ul>
+  </section>
+
+  <footer>
+    Built by <a href="https://github.com/mihai-chiorean">Mihai Chiorean</a> for the Gemma 4 hackathon.
+  </footer>
+</main>
+<script>
+  (function () {
+    var id = (typeof YOUTUBE_VIDEO_ID === "string") ? YOUTUBE_VIDEO_ID.trim() : "";
+    if (!/^[A-Za-z0-9_-]{6,20}$/.test(id) || id === "REPLACE_WITH_VIDEO_ID") return;
+    var f = document.createElement("iframe");
+    f.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(id) + "?rel=0";
+    f.title = "Reachy Mini × Gemma 4 demo video";
+    f.loading = "lazy";
+    f.allow = "accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share";
+    f.referrerPolicy = "strict-origin-when-cross-origin";
+    f.allowFullscreen = true;
+    var box = document.getElementById("video");
+    box.replaceChildren(f);
+  })();
+</script>
+</body>
+</html>
